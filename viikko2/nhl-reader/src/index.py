@@ -1,6 +1,6 @@
+from rich.console import Console
 from player_reader import PlayerReader
 from player_stats import PlayerStats
-from rich.console import Console
 
 def main():
     console = Console(force_terminal=True)
@@ -11,7 +11,7 @@ def main():
 
         if action == "0":
             break
-        
+
         console.print("available seasons: [2018-19] to [2025-26]", style="magenta")
         console.print("input season (in the format 20xx-xx): ", style="red")
         season = input()
@@ -35,7 +35,7 @@ def main():
 
         else:
             console.print("no players found. please check the input\n", style="bold red")
-        
+
 
 
 main()
