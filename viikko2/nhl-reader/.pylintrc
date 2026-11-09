@@ -1,0 +1,10 @@
+[tool.pylint.format]
+
+max-line-length = 100
+
+indent-after-paren = 4
+
+indent-string = "    "
+
+disable = missing-module-docstring, missing-function-docstring, missing-class-docstring
+
