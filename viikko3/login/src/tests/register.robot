@@ -38,6 +38,54 @@ Register With Username That Is Already In Use
     Click  button >> text=Register
     Registration Should Fail With Message  Username already in use
 
+Register With Password Containing Letters And Numbers
+    Go To Register Page
+    Set Username  miumau
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click  button >> text=Register
+    Registration Should Succeed
+
+Register With Password Containing Letters And Special Characters
+    Go To Register Page
+    Set Username  miumau
+    Set Password  kalle#abc
+    Set Password Confirmation  kalle#abc
+    Click  button >> text=Register
+    Registration Should Succeed
+
+Register With Matching Password And Confirmation
+    Go To Register Page
+    Set Username  miuku
+    Set Password  kalle123
+    Set Password Confirmation  kalle123
+    Click  button >> text=Register
+    Registration Should Succeed
+
+Reject Registration With Mismatching Password Confirmation
+    Go To Register Page
+    Set Username  miuku
+    Set Password  kalle123
+    Set Password Confirmation  kalle456
+    Click  button >> text=Register
+    Registration Should Fail With Message  Passwords do not match
+
+Reject Password Containing Only Lowercase Letters
+    Go To Register Page
+    Set Username  miumau
+    Set Password  kallekalle
+    Set Password Confirmation  kallekalle
+    Click  button >> text=Register
+    Registration Should Fail With Message  Password must contain a number or special character
+
+Reject Password Containing Only Uppercase And Lowercase Letters
+    Go To Register Page
+    Set Username  miumau
+    Set Password  KalleKalle
+    Set Password Confirmation  KalleKalle
+    Click  button >> text=Register
+    Registration Should Fail With Message  Password must contain a number or special character
+
 
 *** Keywords ***
 Registration Should Succeed
