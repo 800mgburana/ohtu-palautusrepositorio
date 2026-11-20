@@ -76,3 +76,41 @@ class TestKauppa(unittest.TestCase):
 
         self.varasto_mock.hae_tuote.assert_called_once_with(1)
         self.pankki_mock.tilisiirto.assert_called_with(self.nimi, ANY, self.tili_numero, self.kauppa._kaupan_tili, 5)
+
+    def test_aloita_asionti_nollaa(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu(self.nimi, self.tili_numero)
+
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu(self.nimi, self.tili_numero)
+
+        maksetut_summat = [call.args[-1] for call in self.pankki_mock.tilisiirto.call_args_list]
+        self.assertEqual(maksetut_summat, [10,5])
+
+    # kauppa pyytää uuden viitenumeron jokaiselle maksutapahtumalle
+    def test_uusi_viitenumero(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.tilimaksu(self.nimi, self.tili_numero)
+
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(2)
+        self.kauppa.tilimaksu(self.nimi, self.tili_numero)
+
+        self.assertEqual(self.viitegeneraattori_mock.uusi.call_count, 2)
+
+    def test_poista_tuote(self):
+        self.kauppa.aloita_asiointi()
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(1)
+        self.kauppa.lisaa_koriin(1)
+        
+        self.kauppa.poista_korista(1)
+        self.kauppa.poista_korista(1)
+
+        self.kauppa.tilimaksu(self.nimi, self.tili_numero)
+        self.pankki_mock.tilisiirto.assert_called_once_with(ANY, ANY, ANY, ANY, 5)
+
